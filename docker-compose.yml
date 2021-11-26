@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  pgbouncer:
+    hostname: pgbouncer
+    image: pgbouncer:latest
+    environment:
+        - POOL_MODE=transaction
+        - ADMIN_USERS=postgres
+        - APPLICATION_NAME_ADD_HOST=1
+        - MAX_DB_CONNECTIONS=200
+        - AUTH_TYPE=plain
+        - AUTH_USER=postgres
+        - DB_NAME=example
+        - SERVER=0.0.0.0
+        - PORT=5432
+        - AUTH_QUERY=SELECT concat('"', uname, '" ') AS uname , concat('"', phash, '"') AS phash  FROM public.user_lookup($$1) 
+        - VERBOSE=2
+        - LOG_CONNECTIONS=1
+        - SECRET_NAME=secret
+        - AWS_REGION=sa-east-1
+    ports:
+      - "5433:5432"
+    networks:
+      - default
+  
